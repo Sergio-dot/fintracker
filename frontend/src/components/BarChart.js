@@ -17,8 +17,8 @@ const IncomeExpenseChart = ({ data }) => {
         <YAxis />
         <Tooltip />
         <Legend />
-        <Bar dataKey="incomes" fill="#82ca9d" />
-        <Bar dataKey="expenses" fill="#8884d8" />
+        <Bar dataKey="expenses" fill="#5f5acaff" />
+        <Bar dataKey="incomes" fill="#088036ff" />
       </BarChart>
     </ResponsiveContainer>
   );
