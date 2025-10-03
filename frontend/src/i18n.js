@@ -21,6 +21,8 @@ const MESSAGES = {
         summary: 'Summary',
         loadingSummary: 'Loading summary...',
         totalExpenses: 'Total Expenses',
+        totalIncomes: 'Total Incomes',
+        commonExpenses: 'Common Expenses',
     },
     it: {
         addIncome: 'Aggiungi reddito',
@@ -41,6 +43,8 @@ const MESSAGES = {
         summary: 'Riepilogo',
         loadingSummary: 'Caricamento riepilogo...',
         totalExpenses: 'Spese Totali',
+        totalIncomes: 'Redditi Totali',
+        commonExpenses: 'Spese Comuni',
     }
 };
 
