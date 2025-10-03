@@ -41,9 +41,9 @@ const MonthlySummary = ({ month, year }) => {
   return (
     <div className="card">
   <h3 className="card-title">{t('summary')} {summary.month}/{summary.year}</h3>
-      <div className="muted">Total expenses: {summary.total_expenses.toLocaleString(undefined, { style: 'currency', currency: 'EUR' })}</div>
-      <div className="muted">Common expenses: {summary.total_common_expenses.toLocaleString(undefined, { style: 'currency', currency: 'EUR' })}</div>
-      <div className="muted">Total income: {summary.total_income.toLocaleString(undefined, { style: 'currency', currency: 'EUR' })}</div>
+      <div className="muted">{t('totalExpenses')}: {summary.total_expenses.toLocaleString(undefined, { style: 'currency', currency: 'EUR' })}</div>
+      <div className="muted">{t('commonExpenses')}: {summary.total_common_expenses.toLocaleString(undefined, { style: 'currency', currency: 'EUR' })}</div>
+      <div className="muted">{t('totalIncomes')}: {summary.total_income.toLocaleString(undefined, { style: 'currency', currency: 'EUR' })}</div>
 
       <table style={{ width: '100%', marginTop: 12, borderCollapse: 'collapse' }}>
         <thead>

@@ -12,7 +12,7 @@ const IncomeExpenseChart = ({ data }) => {
 
   return (
     <ResponsiveContainer width={"100%"} height={300}>
-      <BarChart style={{outline: 'none !important' }} data={normalized} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+      <BarChart data={normalized} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
         <XAxis dataKey="name" />
         <YAxis />
         <Tooltip />
