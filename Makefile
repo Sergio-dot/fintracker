@@ -1,6 +1,6 @@
 .PHONY: dev
 
 dev:
-	cd frontend && npx concurrently \
-		"cd .. && uvicorn backend.server:app --reload" \
-		"npm run start"
+	npx concurrently \
+		"uvicorn backend.server:app --reload" \
+		"cd frontend && npm run start"
