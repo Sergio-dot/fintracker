@@ -9,15 +9,17 @@ function App() {
   return (
     <SettingsProvider>
       <div className="App">
-        <div className="topbar" style={{padding: '16px 16px', backgroundColor: '#30577eff', borderBottom: '1px solid #e5e7eb', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div className="topbar-left">
-            <h2 style={{ margin: 0, userSelect: 'none' }}>FinTracker</h2>
+        <header className="topbar bg-[#30577e] text-white border-b border-gray-200">
+          <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+            <div className="topbar-left flex items-center gap-3">
+              <h2 className="m-0 select-none text-lg font-semibold">FinTracker</h2>
+            </div>
+            <div className="controls flex items-center gap-3">
+              <LanguageSelector />
+              {/* <ThemeToggle /> */}
+            </div>
           </div>
-          <div className="controls">
-            <LanguageSelector />
-            <ThemeToggle />
-          </div>
-        </div>
+        </header>
 
         <Dashboard />
       </div>

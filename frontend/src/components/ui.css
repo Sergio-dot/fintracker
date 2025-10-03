@@ -112,7 +112,18 @@
 .controls { display:flex; gap:12px; align-items:center; }
 
 /* Language selector */
-.lang-select { padding:6px 8px; border-radius:6px; border:1px solid #d1d5db; background:#fff }
+.lang-select {
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  background: var(--card-bg, #fff);
+  color: var(--text, #0f172a);
+}
+
+/* ensure selects in dark theme are readable */
+html[data-theme='dark'] .lang-select {
+  border-color: rgba(255,255,255,0.08);
+}
 
 /* Animated theme toggle */
 .theme-toggle {
