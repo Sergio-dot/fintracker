@@ -37,6 +37,11 @@ export const postExpense = async (expense) => {
   return response.data;
 };
 
+export const updateExpense = async (id, expense) => {
+  const response = await axios.put(`${API_BASE_URL}/expenses/${id}`, expense);
+  return response.data;
+};
+
 export const getMonthlySummary = async (month, year) => {
   let m = month;
   if (typeof m === 'string' && m.includes(':')) {
