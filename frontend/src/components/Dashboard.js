@@ -96,7 +96,7 @@ const Dashboard = () => {
     pushToTrend(d, "expenses", e.amount || 0);
   });
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <p><span className="inline-flex items-center"><svg className="animate-spin h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg> <span style={{ marginLeft: 8 }}>Loading...</span></span></p>;
   if (error) return <p>Error: {error}</p>;
   const totals = {
     incomes: incomes.reduce((acc, i) => acc + (i.amount || 0), 0),
