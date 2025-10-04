@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getMonthlySummary } from "../api/api";
 import "./ui.css";
 import { useTranslation } from '../i18n';
+import Spinner from './Spinner';
 
 /**
  * MonthlySummary component
@@ -34,7 +35,7 @@ const MonthlySummary = ({ month, year }) => {
   }, [month, year]);
 
   const { t } = useTranslation();
-  if (loading) return <div className="card">{t('loadingSummary')}</div>;
+  if (loading) return <div className="card"><div className="p-4 flex items-center"><Spinner size={20} /><span className="ml-2">{t('loadingSummary')}</span></div></div>;
   if (error) return <div className="card">Error: {error}</div>;
   if (!summary) return null;
   // Build per-user map from allocations
@@ -60,9 +61,8 @@ const MonthlySummary = ({ month, year }) => {
       userMap[p.user_id].paid_common += p.amount;
     });
   }
-
-  // Fallback: if API does not provide payers, try to use summary.paid_common_by (compat)
-  if (summary.paid_common_by && Array.isArray(summary.paid_common_by)) {
+  // Fallback: if API does not provide common_payers, try to use summary.paid_common_by (compat)
+  if ((!summary.common_payers || !Array.isArray(summary.common_payers)) && summary.paid_common_by && Array.isArray(summary.paid_common_by)) {
     summary.paid_common_by.forEach((p) => {
       if (!userMap[p.user_id]) {
         userMap[p.user_id] = { user_id: p.user_id, name: p.name || `User ${p.user_id}`, income: 0, alloc_quota: 0, paid_common: 0 };
@@ -104,6 +104,19 @@ const MonthlySummary = ({ month, year }) => {
 
   return (
     <div>
+      {/* Debug mismatch warning */}
+      {summary.debug_mismatch && summary.debug_mismatch.mismatch && (
+        <div className="card" style={{ borderLeft: '4px solid #f59e0b', marginBottom: 12 }}>
+          <h4 style={{ margin: 0 }}>Warning: data mismatch</h4>
+          <div className="muted" style={{ marginTop: 6 }}>
+            Sum of common payers: {summary.debug_mismatch.sum_common_payers.toLocaleString(undefined, { style: 'currency', currency: 'EUR' })}
+            {' '}vs total common expenses: {summary.debug_mismatch.total_common_expenses.toLocaleString(undefined, { style: 'currency', currency: 'EUR' })}
+          </div>
+          <div className="muted" style={{ marginTop: 6 }}>
+            {t('debugMismatchSuggestion') || 'There is a discrepancy between recorded "paid common" amounts and the total common expenses. Inspect individual common expenses for the month.'}
+          </div>
+        </div>
+      )}
       <div className="card">
         <h3 className="card-title">{t('summary')} {summary.month}/{summary.year}</h3>
         <div className="muted">{t('totalExpenses')}: {summary.total_expenses.toLocaleString(undefined, { style: 'currency', currency: 'EUR' })}</div>
