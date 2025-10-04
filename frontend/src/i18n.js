@@ -26,6 +26,10 @@ const MESSAGES = {
         user: 'User',
         income: 'Income',
         commonShare: 'Common Share',
+        paidCommon: 'Paid common',
+        net: 'Net',
+        settlements: 'Settlements',
+        noSettlementsNeeded: 'No settlements needed',
     },
     it: {
         addIncome: 'Aggiungi reddito',
@@ -51,6 +55,10 @@ const MESSAGES = {
         user: 'Utente',
         income: 'Reddito',
         commonShare: 'Quota Comune',
+        paidCommon: 'Pagato comune',
+        net: 'Netto',
+        settlements: 'Regolamenti',
+        noSettlementsNeeded: 'Nessun regolamento necessario',
     }
 };
 

@@ -82,13 +82,36 @@ def monthly_summary(month: int, year: int | None = None, db: Session = Depends(g
             'alloc_quota': float(share * total_common)
         })
 
+    # Aggregate who paid the common expenses in this month by owner
+    # Returns rows: owner_id, name, amount
+    common_payers_q = db.query(models.User.id.label('user_id'), models.User.name, func.coalesce(func.sum(models.Expense.amount), 0).label('amount')).join(
+        models.Expense, models.Expense.owner_id == models.User.id
+    ).filter(
+        func.extract('month', models.Expense.date) == month,
+        func.extract('year', models.Expense.date) == year,
+        models.Expense.is_common == True
+    ).group_by(models.User.id).all()
+
+    common_payers = []
+    for row in common_payers_q:
+        common_payers.append({
+            'user_id': int(row.user_id),
+            'name': row.name,
+            'amount': float(row.amount or 0)
+        })
+
+    # Provide a compatible older key name for frontends expecting `paid_common_by`
+    paid_common_by = [dict(r) for r in common_payers]
+
     return {
         'month': month,
         'year': year,
         'total_expenses': float(total_expenses),
         'total_common_expenses': float(total_common),
         'total_income': float(total_income),
-        'allocations': allocations
+        'allocations': allocations,
+        'common_payers': common_payers,
+        'paid_common_by': paid_common_by,
     }
 
 # GET /expenses/{expense_id}
