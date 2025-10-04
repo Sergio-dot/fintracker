@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from "react";
 import { getIncomes, getExpenses, getUsers } from "../api/api";
 import IncomeExpenseChart from "./BarChart";
 import CategoryChart from "./CategoryChart";
-import TrendChart from "./TrendChart";
 import Filters from "./Filters";
 import IncomeForm from "./IncomeForm";
 import ExpenseForm from "./ExpenseForm";
@@ -97,8 +96,6 @@ const Dashboard = () => {
     pushToTrend(d, "expenses", e.amount || 0);
   });
 
-  const trendData = Object.values(trendMap).sort((a, b) => (a.period > b.period ? 1 : -1));
-
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
   const totals = {
@@ -156,13 +153,6 @@ const Dashboard = () => {
               <CategoryChart data={categoryAgg} />
             </div>
 
-          </div>
-
-          <div className="chart-card">
-            <div className="card">
-              <h3 className="card-title">{t('trend')}</h3>
-              <TrendChart data={trendData} />
-            </div>
           </div>
         </div>
       </div>
