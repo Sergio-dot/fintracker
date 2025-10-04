@@ -6,7 +6,7 @@ const LanguageSelector = () => {
 
   return (
     <select
-      className="lang-select px-2 py-1 rounded-md border bg-white text-black dark:bg-slate-800 dark:text-white"
+      className="lang-select px-2 py-1 rounded-md border text-black"
       value={lang}
       onChange={(e) => setLang(e.target.value)}
       aria-label="Language selector"

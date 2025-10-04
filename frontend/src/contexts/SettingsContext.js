@@ -18,6 +18,12 @@ export const SettingsProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem('ft_theme', theme);
     document.documentElement.setAttribute('data-theme', theme);
+    // also toggle the `dark` class so Tailwind's class-based dark mode works
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   }, [theme]);
 
   return (

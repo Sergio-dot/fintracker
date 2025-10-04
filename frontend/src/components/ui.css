@@ -118,8 +118,6 @@
   padding: 6px 8px;
   border-radius: 6px;
   border: 1px solid var(--input-border, #d1d5db);
-  background: var(--card-bg, #fff);
-  color: var(--text, #0f172a);
 }
 
 /* ensure selects in dark theme are readable */
@@ -181,10 +179,7 @@ html[data-theme='dark'] .lang-select {
 
 /* Dark theme overrides */
 html[data-theme='dark'] {
-  --card-bg: #0b1220;
   --card-border: rgba(255,255,255,0.06);
-  --text: #e6eef9;
-  --muted: #9aa6b2;
   --input-border: rgba(255,255,255,0.06);
   --input-bg: rgba(255,255,255,0.02);
   --toggle-bg: #374151;
