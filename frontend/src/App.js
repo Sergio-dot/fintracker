@@ -16,7 +16,7 @@ function App() {
             </div>
             <div className="controls flex items-center gap-3">
               <LanguageSelector />
-              {/* <ThemeToggle /> */}
+              <ThemeToggle />
             </div>
           </div>
         </header>

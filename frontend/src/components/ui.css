@@ -1,8 +1,8 @@
 .card {
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--card-border, #e0e0e0);
   padding: 16px;
   border-radius: 10px;
-  background: #fff;
+  background: var(--card-bg, #fff);
   box-shadow: 0 4px 12px rgba(16,24,40,0.06);
   margin-bottom: 12px;
 }
@@ -10,7 +10,7 @@
 .card-title {
   margin: 0 0 8px 0;
   font-size: 1.1rem;
-  color: #0f172a;
+  color: var(--text, #0f172a);
 }
 
 .form-input {
@@ -20,9 +20,11 @@
   margin-top: 6px;
   margin-bottom: 6px;
   box-sizing: border-box;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--input-border, #d1d5db);
   border-radius: 6px;
   font-size: 0.95rem;
+  background: var(--input-bg, transparent);
+  color: var(--text, #0f172a);
 }
 
 .form-row {
@@ -61,7 +63,7 @@
 }
 
 .muted {
-  color: #4b5563;
+  color: var(--muted, #4b5563);
   font-size: 0.95rem;
 }
 
@@ -115,7 +117,7 @@
 .lang-select {
   padding: 6px 8px;
   border-radius: 6px;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--input-border, #d1d5db);
   background: var(--card-bg, #fff);
   color: var(--text, #0f172a);
 }
@@ -130,7 +132,7 @@ html[data-theme='dark'] .lang-select {
   width: 56px;
   height: 30px;
   border-radius: 999px;
-  background: #e5e7eb;
+  background: var(--toggle-bg, #e5e7eb);
   padding: 3px;
   position: relative;
   cursor: pointer;
@@ -138,23 +140,62 @@ html[data-theme='dark'] .lang-select {
   align-items: center;
 }
 
-.theme-toggle[data-theme="dark"] { background: #374151; }
+.theme-toggle[data-theme="dark"] { background: var(--toggle-bg-dark, #374151); }
 
 .theme-knob {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: #fff;
+  background: var(--knob-bg, #fff);
   display:flex; align-items:center; justify-content:center;
   box-shadow: 0 2px 6px rgba(2,6,23,0.2);
   transition: transform 220ms cubic-bezier(.2,.9,.2,1), background 220ms;
   transform: translateX(0);
 }
 
-.theme-toggle[data-theme="dark"] .theme-knob { transform: translateX(26px); background: #111827 }
+.theme-toggle[data-theme="dark"] .theme-knob { transform: translateX(26px); background: var(--knob-bg-dark, #111827) }
 
-.theme-icon { width:14px; height:14px; color: #f59e0b }
-.theme-toggle[data-theme="dark"] .theme-icon { color: #f3f4f6 }
+.theme-icon { width:14px; height:14px; color: var(--icon-color, #f59e0b) }
+.theme-toggle[data-theme="dark"] .theme-icon { color: var(--icon-color-dark, #f3f4f6) }
+
+/* Root variables for theming */
+:root {
+  --card-bg: #ffffff;
+  --card-border: #e0e0e0;
+  --text: #0f172a;
+  --muted: #4b5563;
+  --input-border: #d1d5db;
+  --input-bg: #ffffff;
+  --toggle-bg: #e5e7eb;
+  --toggle-bg-dark: #374151;
+  --knob-bg: #ffffff;
+  --knob-bg-dark: #111827;
+  --icon-color: #f59e0b;
+  --icon-color-dark: #f3f4f6;
+  --chart-bg: transparent;
+  --chart-axis: #0f172a;
+  --chart-tick: #4b5563;
+  --tooltip-bg: #111827;
+  --tooltip-text: #f9fafb;
+}
+
+/* Dark theme overrides */
+html[data-theme='dark'] {
+  --card-bg: #0b1220;
+  --card-border: rgba(255,255,255,0.06);
+  --text: #e6eef9;
+  --muted: #9aa6b2;
+  --input-border: rgba(255,255,255,0.06);
+  --input-bg: rgba(255,255,255,0.02);
+  --toggle-bg: #374151;
+  --knob-bg: #0b1220;
+  --icon-color: #f3f4f6;
+  --chart-bg: transparent;
+  --chart-axis: #e6eef9;
+  --chart-tick: #9aa6b2;
+  --tooltip-bg: #0f172a;
+  --tooltip-text: #f9fafb;
+}
 
 
 @media (max-width: 900px) {
@@ -165,3 +206,21 @@ html[data-theme='dark'] .lang-select {
     grid-template-columns: 1fr;
   }
 }
+
+/* Recharts SVG text and tooltip styling to follow theme variables */
+.recharts-wrapper svg text {
+  fill: var(--chart-axis, #0f172a) !important;
+}
+
+.recharts-default-tooltip {
+  background: var(--tooltip-bg, #111827) !important;
+  color: var(--tooltip-text, #f9fafb) !important;
+  border: none !important;
+}
+
+.recharts-legend-item-text, .recharts-legend-wrapper {
+  color: var(--chart-tick, #4b5563) !important;
+}
+
+/* ensure table text uses theme colors */
+table { color: var(--text, inherit); }

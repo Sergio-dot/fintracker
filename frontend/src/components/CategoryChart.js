@@ -32,6 +32,11 @@ const CategoryChart = ({ data }) => {
 
   const fmt = (v) => v.toLocaleString(undefined, { style: 'currency', currency: 'EUR' });
 
+  const rootStyles = typeof window !== 'undefined' ? getComputedStyle(document.documentElement) : null;
+  const tickColor = rootStyles?.getPropertyValue('--chart-tick')?.trim() || '#4b5563';
+  const tooltipBg = rootStyles?.getPropertyValue('--tooltip-bg')?.trim() || '#111827';
+  const tooltipText = rootStyles?.getPropertyValue('--tooltip-text')?.trim() || '#f9fafb';
+
   return (
     <ResponsiveContainer width="100%" height={300}>
       <PieChart>
@@ -40,8 +45,8 @@ const CategoryChart = ({ data }) => {
             <Cell key={`cell-${entry.name}`} fill={colorFor(entry.name)} />
           ))}
         </Pie>
-        <Tooltip formatter={(value) => fmt(value)} />
-        <Legend />
+        <Tooltip formatter={(value) => fmt(value)} contentStyle={{ background: tooltipBg, border: 'none', color: tooltipText }} itemStyle={{ color: tooltipText }} />
+        <Legend wrapperStyle={{ color: tickColor }} />
       </PieChart>
     </ResponsiveContainer>
   );

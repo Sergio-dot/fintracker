@@ -47,7 +47,7 @@ const MonthlySummary = ({ month, year }) => {
 
       <table style={{ width: '100%', marginTop: 12, borderCollapse: 'collapse' }}>
         <thead>
-          <tr style={{ textAlign: 'left', borderBottom: '1px solid #e5e7eb' }}>
+          <tr style={{ textAlign: 'left', borderBottom: `1px solid var(--card-border, #e5e7eb)` }}>
             <th>{t('user')}</th>
             <th>{t('income')}</th>
             <th>{t('commonShare')}</th>
@@ -55,10 +55,10 @@ const MonthlySummary = ({ month, year }) => {
         </thead>
         <tbody>
           {summary.allocations.map((a) => (
-            <tr key={a.user_id} style={{ borderBottom: '1px solid #f3f4f6' }}>
-              <td style={{ padding: '8px 6px' }}>{a.name}</td>
-              <td style={{ padding: '8px 6px' }}>{a.income.toLocaleString(undefined, { style: 'currency', currency: 'EUR' })}</td>
-              <td style={{ padding: '8px 6px' }}>{a.alloc_quota.toLocaleString(undefined, { style: 'currency', currency: 'EUR' })}</td>
+            <tr key={a.user_id} style={{ borderBottom: `1px solid rgba(255,255,255,0.03)` }}>
+              <td style={{ padding: '8px 6px', color: 'var(--text, inherit)' }}>{a.name}</td>
+              <td style={{ padding: '8px 6px', color: 'var(--text, inherit)' }}>{a.income.toLocaleString(undefined, { style: 'currency', currency: 'EUR' })}</td>
+              <td style={{ padding: '8px 6px', color: 'var(--text, inherit)' }}>{a.alloc_quota.toLocaleString(undefined, { style: 'currency', currency: 'EUR' })}</td>
             </tr>
           ))}
         </tbody>
