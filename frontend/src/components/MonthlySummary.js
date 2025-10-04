@@ -48,9 +48,9 @@ const MonthlySummary = ({ month, year }) => {
       <table style={{ width: '100%', marginTop: 12, borderCollapse: 'collapse' }}>
         <thead>
           <tr style={{ textAlign: 'left', borderBottom: '1px solid #e5e7eb' }}>
-            <th>User</th>
-            <th>Income</th>
-            <th>Common share</th>
+            <th>{t('user')}</th>
+            <th>{t('income')}</th>
+            <th>{t('commonShare')}</th>
           </tr>
         </thead>
         <tbody>

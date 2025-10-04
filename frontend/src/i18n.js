@@ -23,6 +23,9 @@ const MESSAGES = {
         totalExpenses: 'Total Expenses',
         totalIncomes: 'Total Incomes',
         commonExpenses: 'Common Expenses',
+        user: 'User',
+        income: 'Income',
+        commonShare: 'Common Share',
     },
     it: {
         addIncome: 'Aggiungi reddito',
@@ -45,6 +48,9 @@ const MESSAGES = {
         totalExpenses: 'Spese Totali',
         totalIncomes: 'Redditi Totali',
         commonExpenses: 'Spese Comuni',
+        user: 'Utente',
+        income: 'Reddito',
+        commonShare: 'Quota Comune',
     }
 };
 
