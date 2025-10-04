@@ -103,6 +103,31 @@ def monthly_summary(month: int, year: int | None = None, db: Session = Depends(g
     # Provide a compatible older key name for frontends expecting `paid_common_by`
     paid_common_by = [dict(r) for r in common_payers]
 
+    # Diagnostic: fetch raw common expenses list (id, amount, owner_id, category, date)
+    common_expenses_q = db.query(models.Expense).filter(
+        func.extract('month', models.Expense.date) == month,
+        func.extract('year', models.Expense.date) == year,
+        models.Expense.is_common == True
+    ).all()
+
+    common_expenses_debug = []
+    for e in common_expenses_q:
+        common_expenses_debug.append({
+            'id': int(e.id),
+            'amount': float(e.amount or 0),
+            'owner_id': int(e.owner_id) if e.owner_id is not None else None,
+            'category': e.category,
+            'date': e.date.isoformat() if e.date is not None else None,
+        })
+
+    # diagnostic mismatch: sum of common_payers vs total_common
+    sum_common_payers = sum([p['amount'] for p in common_payers])
+    debug_mismatch = {
+        'total_common_expenses': float(total_common),
+        'sum_common_payers': float(sum_common_payers),
+        'mismatch': abs(sum_common_payers - total_common) > 0.009
+    }
+
     return {
         'month': month,
         'year': year,
@@ -112,6 +137,8 @@ def monthly_summary(month: int, year: int | None = None, db: Session = Depends(g
         'allocations': allocations,
         'common_payers': common_payers,
         'paid_common_by': paid_common_by,
+        'common_expenses_debug': common_expenses_debug,
+        'debug_mismatch': debug_mismatch,
     }
 
 # GET /expenses/{expense_id}
@@ -142,3 +169,20 @@ def delete_expense(expense_id: int, db: Session = Depends(get_db)):
         db.delete(db_expense)
         db.commit()
     return {"message": "Expense deleted"}
+
+
+# PUT /expenses/{expense_id}
+@router.put("/{expense_id}")
+def update_expense(expense_id: int, expense: ExpenseCreate, db: Session = Depends(get_db)):
+    db_expense = db.query(models.Expense).filter(models.Expense.id == expense_id).first()
+    if not db_expense:
+        return {"message": "Expense not found"}
+    db_expense.amount = expense.amount
+    db_expense.category = expense.category
+    db_expense.is_common = expense.is_common
+    db_expense.owner_id = expense.owner_id
+    db_expense.date = expense.date
+    db.add(db_expense)
+    db.commit()
+    db.refresh(db_expense)
+    return db_expense
