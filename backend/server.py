@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI
 from .routers import users, expenses, incomes
 from .db.db import engine, Base
@@ -12,9 +13,11 @@ app.include_router(users.router)
 app.include_router(expenses.router)
 app.include_router(incomes.router)
 
+origins = os.getenv("CORS_ALLOW_ORIGINS", "*").split(",")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
