@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE || 'http://localhost:8000';
+const API_BASE_URL = '/api';
 
 export const getUsers = async () => {
   const response = await axios.get(`${API_BASE_URL}/users`);
@@ -26,13 +26,11 @@ export const getExpenses = async (month, user_id) => {
 };
 
 export const postIncome = async (income) => {
-  // income: { amount, owner_id, date }
   const response = await axios.post(`${API_BASE_URL}/incomes/`, income);
   return response.data;
 };
 
 export const postExpense = async (expense) => {
-  // expense: { amount, category, owner_id, date }
   const response = await axios.post(`${API_BASE_URL}/expenses/`, expense);
   return response.data;
 };
