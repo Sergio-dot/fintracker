@@ -25,6 +25,7 @@ function App() {
               <nav style={{ marginLeft: 16 }}>
                 <button id="tab-dashboard" onClick={() => setView('dashboard')}>Dashboard</button>
                 <button id="tab-expenses" onClick={() => setView('expenses')} style={{ marginLeft: 8 }}>Expenses</button>
+                <button id="tab-incomes" onClick={() => setView('incomes')} style={{ marginLeft: 8 }}>Incomes</button>
               </nav>
             </div>
             <div className="controls flex items-center gap-3">
