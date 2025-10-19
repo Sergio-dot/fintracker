@@ -13,7 +13,9 @@ app.include_router(users.router)
 app.include_router(expenses.router)
 app.include_router(incomes.router)
 
-origins = os.getenv("CORS_ALLOW_ORIGINS", "*").split(",")
+# CORS
+cors_env = os.getenv("CORS_ALLOW_ORIGINS", "")
+origins = [o.strip() for o in cors_env.split(",") if o.strip()]
 
 app.add_middleware(
     CORSMiddleware,

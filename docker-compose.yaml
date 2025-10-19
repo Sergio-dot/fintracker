@@ -1,0 +1,27 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: fintracker-backend
+    ports:
+      - "8084:8000"
+    environment:
+      - CORS_ALLOW_ORIGINS=http://localhost:3000,http://127.0.0.1:3000,http://192.168.1.22:8085,http://100.68.69.96:8085
+    volumes:
+      - ./finances.db:/app/finances.db
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: fintracker-frontend
+    ports:
+      - "8085:80"
+    environment:
+      - REACT_APP_API_BASE=http://192.168.1.22:8084
+    depends_on:
+      - backend
+    restart: unless-stopped
+
