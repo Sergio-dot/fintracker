@@ -30,6 +30,11 @@ export const postIncome = async (income) => {
   return response.data;
 };
 
+export const updateIncome = async (id, updatedData) => {
+  const response = await axios.put(`${API_BASE_URL}/incomes/${id}`, updatedData);
+  return response.data;
+};
+
 export const postExpense = async (expense) => {
   const response = await axios.post(`${API_BASE_URL}/expenses/`, expense);
   return response.data;
