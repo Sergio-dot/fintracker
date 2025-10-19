@@ -90,7 +90,7 @@ const ExpenseForm = ({ users, onAdded }) => {
                 </div>
 
                 <div className="form-actions">
-                    <button className="btn btn-danger" type="submit" disabled={loading}>{loading ? "Adding..." : "Add Expense"}</button>
+                    <button className="btn btn-primary" type="submit" disabled={loading}>{loading ? "Adding..." : "Add Expense"}</button>
                     {success && <span className="muted">{success}</span>}
                 </div>
             </form>
