@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-const API_BASE_URL = '/api';
+const API_BASE_URL = process.env.REACT_APP_API_BASE || '/api';
 
 export const getUsers = async () => {
-  const response = await axios.get(`${API_BASE_URL}/users`);
+  const response = await axios.get(`${API_BASE_URL}/users/`);
   return response.data;
-}
+};
 
 export const getIncomes = async (month, user_id) => {
   const params = {};

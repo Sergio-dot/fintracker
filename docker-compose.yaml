@@ -20,8 +20,7 @@ services:
     ports:
       - "8085:80"
     environment:
-      - REACT_APP_API_BASE=http://192.168.1.22:8084
+      - REACT_APP_API_BASE=http://backend:8000
     depends_on:
       - backend
     restart: unless-stopped
-
