@@ -1,6 +1,7 @@
 import './App.css';
 import Dashboard from './components/Dashboard';
 import ExpensesPage from './components/ExpensesPage';
+import IncomesPage from './components/IncomesPage';
 import { SettingsProvider } from './contexts/SettingsContext';
 import LanguageSelector from './components/LanguageSelector';
 import ThemeToggle from './components/ThemeToggle';
@@ -12,6 +13,7 @@ function App() {
 
   const MainView = () => {
     if (view === 'expenses') return <ExpensesPage />;
+    if (view === 'incomes') return <IncomesPage />;
     return <Dashboard />;
   };
 
@@ -23,9 +25,19 @@ function App() {
             <div className="topbar-left flex items-center gap-3">
               <h2 className="m-0 select-none text-lg font-semibold">FinTracker</h2>
               <nav style={{ marginLeft: 16 }}>
-                <button id="tab-dashboard" onClick={() => setView('dashboard')}>Dashboard</button>
-                <button id="tab-expenses" onClick={() => setView('expenses')} style={{ marginLeft: 8 }}>Expenses</button>
-                <button id="tab-incomes" onClick={() => setView('incomes')} style={{ marginLeft: 8 }}>Incomes</button>
+                {['dashboard', 'expenses', 'incomes'].map(v => (
+                  <button
+                    key={v}
+                    onClick={() => setView(v)}
+                    style={{
+                      marginLeft: v === 'dashboard' ? 0 : 8,
+                      fontWeight: view === v ? 'bold' : 'normal',
+                      textDecoration: view === v ? 'underline' : 'none'
+                    }}
+                  >
+                    {v.charAt(0).toUpperCase() + v.slice(1)}
+                  </button>
+                ))}
               </nav>
             </div>
             <div className="controls flex items-center gap-3">
