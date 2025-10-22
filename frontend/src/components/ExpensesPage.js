@@ -19,6 +19,7 @@ const ExpensesPage = () => {
         const [showDeleteModal, setShowDeleteModal] = useState(false);
         const [toDeleteId, setToDeleteId] = useState(null);
         const [toast, setToast] = useState(null);
+        const [deleting, setDeleting] = useState(false);
 
     useEffect(() => {
         const fetch = async () => {
@@ -65,6 +66,28 @@ const ExpensesPage = () => {
             // open confirmation modal
             setToDeleteId(id);
             setShowDeleteModal(true);
+    };
+
+    const confirmDeleteExpense = async (idArg) => {
+        const id = idArg ?? toDeleteId;
+        if (!id) {
+            setToast({ type: 'error', text: t('removeFailed') || 'Remove failed' });
+            return;
+        }
+        setDeleting(true);
+        try {
+            await fetch(`${process.env.REACT_APP_API_BASE || 'http://localhost:8000'}/expenses/${id}`, { method: 'DELETE' });
+            const ex = await getExpenses();
+            setExpenses(ex || []);
+            setShowDeleteModal(false);
+            setToDeleteId(null);
+            setToast({ type: 'success', text: t('removedSuccessfully') || 'Removed successfully' });
+            setTimeout(() => setToast(null), 2500);
+        } catch (err) {
+            setToast({ type: 'error', text: t('removeFailed') || 'Remove failed' });
+        } finally {
+            setDeleting(false);
+        }
     };
 
     return (
@@ -159,7 +182,9 @@ const ExpensesPage = () => {
                         <p className="mt-2">{t('confirmRemoveMessage') || 'Are you sure you want to remove this expense?'}</p>
                         <div className="mt-4 text-right">
                             <button onClick={() => { setShowDeleteModal(false); setToDeleteId(null); }} className="bg-blue-600 text-white px-3 py-2 rounded">{t('cancel') || 'Cancel'}</button>
-                            <button onClick={async () => { await fetch(`${process.env.REACT_APP_API_BASE || 'http://localhost:8000'}/expenses/${toDeleteId}`, { method: 'DELETE' }); setShowDeleteModal(false); setToDeleteId(null); const ex = await getExpenses(); setExpenses(ex || []); }} className="bg-red-600 text-white px-3 py-2 rounded ml-2">{t('remove') || 'Rimuovi'}</button>
+                            <button onClick={() => confirmDeleteExpense()} className="bg-red-600 text-white px-3 py-2 rounded ml-2" disabled={deleting}>
+                                {deleting ? <span className="flex items-center"><Spinner size={14} /> <span className="ml-2">{t('removing') || 'Removing...'}</span></span> : (t('remove') || 'Rimuovi')}
+                            </button>
                         </div>
                     </Modal>
 

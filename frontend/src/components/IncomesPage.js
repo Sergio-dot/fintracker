@@ -21,6 +21,7 @@ const IncomesPage = () => {
     const [showAddModal, setShowAddModal] = useState(false);
     const [toDeleteId, setToDeleteId] = useState(null);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [deleting, setDeleting] = useState(false);
     const [toast, setToast] = useState(null);
 
     // Fetch users and incomes
@@ -105,9 +106,15 @@ const IncomesPage = () => {
         setShowDeleteModal(true);
     };
 
-    const confirmDelete = async () => {
+    const confirmDelete = async (idArg) => {
+        const id = idArg ?? toDeleteId;
+        if (!id) {
+            setToast({ type: 'error', text: t('removeFailed') || 'Remove failed' });
+            return;
+        }
+        setDeleting(true);
         try {
-            await fetch(`${process.env.REACT_APP_API_BASE || 'http://localhost:8000'}/incomes/${toDeleteId}`, { method: 'DELETE' });
+            await fetch(`${process.env.REACT_APP_API_BASE || 'http://localhost:8000'}/incomes/${id}`, { method: 'DELETE' });
             await fetchData();
             setToDeleteId(null);
             setShowDeleteModal(false);
@@ -115,6 +122,8 @@ const IncomesPage = () => {
             setTimeout(() => setToast(null), 2500);
         } catch (err) {
             setToast({ type: 'error', text: t('removeFailed') || 'Remove failed' });
+        } finally {
+            setDeleting(false);
         }
     };
 
@@ -251,7 +260,9 @@ const IncomesPage = () => {
                         <p className="mt-2">{t('confirmRemoveMessage') || 'Are you sure you want to remove this income?'}</p>
                         <div className="mt-4 text-right">
                             <button onClick={() => { setShowDeleteModal(false); setToDeleteId(null); }} className="bg-blue-600 text-white px-3 py-2 rounded">{t('cancel') || 'Cancel'}</button>
-                            <button onClick={confirmDelete} className="bg-red-600 text-white px-3 py-2 rounded ml-2">{t('remove') || 'Remove'}</button>
+                            <button onClick={() => confirmDelete()} className="bg-red-600 text-white px-3 py-2 rounded ml-2" disabled={deleting}>
+                                {deleting ? <span className="flex items-center"><Spinner size={14} /> <span className="ml-2">{t('removing') || 'Removing...'}</span></span> : (t('remove') || 'Remove')}
+                            </button>
                         </div>
                     </Modal>
 

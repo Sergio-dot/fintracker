@@ -49,6 +49,8 @@ const MESSAGES = {
         validationDate: 'Select a date',
         savedSuccesfully: 'Saved successfully',
         saveFailed: 'Save failed',
+        rowsPerPage: 'Rows',
+        filterOwner: 'Owner',
     },
     it: {
         addIncome: 'Aggiungi reddito',
@@ -97,6 +99,8 @@ const MESSAGES = {
         validationDate: 'Seleziona una data',
         savedSuccesfully: 'Salvato con successo',
         saveFailed: 'Salvataggio fallito',
+        rowsPerPage: 'Righe',
+        filterOwner: 'Utente',
     }
 };
 
