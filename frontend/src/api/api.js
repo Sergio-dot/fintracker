@@ -2,19 +2,14 @@ import axios from 'axios';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE || '/api';
 
+// USERS
+
 export const getUsers = async () => {
   const response = await axios.get(`${API_BASE_URL}/users/`);
   return response.data;
 };
 
-export const getIncomes = async (month, user_id) => {
-  const params = {};
-  if (month !== undefined && month !== null) params.month = month;
-  if (user_id !== undefined && user_id !== null) params.user_id = user_id;
-
-  const response = await axios.get(`${API_BASE_URL}/incomes/`, { params });
-  return response.data;
-};
+// EXPENSES
 
 export const getExpenses = async (month, user_id) => {
   const params = {};
@@ -22,6 +17,32 @@ export const getExpenses = async (month, user_id) => {
   if (user_id !== undefined && user_id !== null) params.user_id = user_id;
 
   const response = await axios.get(`${API_BASE_URL}/expenses/`, { params });
+  return response.data;
+};
+
+export const postExpense = async (expense) => {
+  const response = await axios.post(`${API_BASE_URL}/expenses/`, expense);
+  return response.data;
+};
+
+export const updateExpense = async (id, expense) => {
+  const response = await axios.put(`${API_BASE_URL}/expenses/${id}`, expense);
+  return response.data;
+};
+
+export const deleteExpense = async (id) => {
+  const response = await axios.delete(`${API_BASE_URL}/expenses/${id}`);
+  return response.data;
+};
+
+// INCOMES
+
+export const getIncomes = async (month, user_id) => {
+  const params = {};
+  if (month !== undefined && month !== null) params.month = month;
+  if (user_id !== undefined && user_id !== null) params.user_id = user_id;
+
+  const response = await axios.get(`${API_BASE_URL}/incomes/`, { params });
   return response.data;
 };
 
@@ -35,15 +56,12 @@ export const updateIncome = async (id, updatedData) => {
   return response.data;
 };
 
-export const postExpense = async (expense) => {
-  const response = await axios.post(`${API_BASE_URL}/expenses/`, expense);
+export const deleteIncome = async (id) => {
+  const response = await axios.delete(`${API_BASE_URL}/incomes/${id}`);
   return response.data;
 };
 
-export const updateExpense = async (id, expense) => {
-  const response = await axios.put(`${API_BASE_URL}/expenses/${id}`, expense);
-  return response.data;
-};
+// SUMMARY
 
 export const getMonthlySummary = async (month, year) => {
   let m = month;
