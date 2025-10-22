@@ -10,6 +10,9 @@ const ExpensesPage = () => {
     const [expenses, setExpenses] = useState([]);
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+    const [ownerFilter, setOwnerFilter] = useState('');
     const [editing, setEditing] = useState(null);
         const [form, setForm] = useState({ amount: '', category: '', owner_id: '', date: '', is_common: false });
         const [showEditModal, setShowEditModal] = useState(false);
@@ -68,6 +71,21 @@ const ExpensesPage = () => {
         <div className="card">
             {loading ? <div className="p-4 flex items-center"><Spinner size={20} /> <span className="ml-2">{t('loading') || 'Loading'}</span></div> : (
                 <div>
+                    <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center space-x-3">
+                            <label className="text-sm text-gray-600">{t('rowsPerPage') || 'Rows'}:</label>
+                            <select value={pageSize} onChange={e => { setPageSize(Number(e.target.value)); setPage(1); }} className="border rounded p-1">
+                                {[10,20,30,40,50].map(n => <option key={n} value={n}>{n}</option>)}
+                            </select>
+
+                            <label className="text-sm text-gray-600 ml-4">{t('filterOwner') || 'Owner'}:</label>
+                            <select value={ownerFilter} onChange={e => { setOwnerFilter(e.target.value); setPage(1); }} className="border rounded p-1">
+                                <option value="">{t('all') || 'All'}</option>
+                                {users.map(u => <option key={u.id} value={u.id}>{u.name}</option>)}
+                            </select>
+                        </div>
+                    </div>
+
                     <table className="w-full" style={{ borderCollapse: 'collapse' }}>
                         <thead>
                             <tr>
@@ -81,22 +99,44 @@ const ExpensesPage = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {expenses.map(e => (
-                                <tr key={e.id}>
-                                    <td>{e.id}</td>
-                                    <td>{e.category}</td>
-                                    <td>{(e.amount || 0).toLocaleString(undefined, { style: 'currency', currency: 'EUR' })}</td>
-                                    <td>{users.find(u => u.id === e.owner_id)?.name || e.owner_id}</td>
-                                    <td>{e.date}</td>
-                                    <td>{e.is_common ? 'Yes' : 'No'}</td>
-                                    <td>
-                                        <button onClick={() => onEdit(e)} className="bg-blue-600 text-white px-3 py-1 rounded">{t('edit') || 'Modifica'}</button>
-                                        <button onClick={() => onDelete(e.id)} className="bg-red-600 text-white px-3 py-1 rounded ml-2">{t('remove') || 'Rimuovi'}</button>
-                                    </td>
-                                </tr>
-                            ))}
+                            {(() => {
+                                const filtered = ownerFilter ? expenses.filter(i => String(i.owner_id) === String(ownerFilter)) : expenses;
+                                const start = (page - 1) * pageSize;
+                                const pageItems = filtered.slice(start, start + pageSize);
+                                return pageItems.map(e => (
+                                    <tr key={e.id}>
+                                        <td>{e.id}</td>
+                                        <td>{e.category}</td>
+                                        <td>{(e.amount || 0).toLocaleString(undefined, { style: 'currency', currency: 'EUR' })}</td>
+                                        <td>{users.find(u => u.id === e.owner_id)?.name || e.owner_id}</td>
+                                        <td>{e.date}</td>
+                                        <td>{e.is_common ? 'Yes' : 'No'}</td>
+                                        <td>
+                                            <button onClick={() => onEdit(e)} className="bg-blue-600 text-white px-3 py-1 rounded">{t('edit') || 'Modifica'}</button>
+                                            <button onClick={() => onDelete(e.id)} className="bg-red-600 text-white px-3 py-1 rounded ml-2">{t('remove') || 'Rimuovi'}</button>
+                                        </td>
+                                    </tr>
+                                ));
+                            })()}
                         </tbody>
                     </table>
+
+                    {/* Pagination controls */}
+                    <div className="flex items-center justify-between mt-3">
+                        <div className="text-sm text-gray-600">
+                            {(() => {
+                                const filtered = ownerFilter ? expenses.filter(i => String(i.owner_id) === String(ownerFilter)) : expenses;
+                                const total = filtered.length;
+                                const from = total === 0 ? 0 : (page - 1) * pageSize + 1;
+                                const to = Math.min(page * pageSize, total);
+                                return `${from}-${to} / ${total}`;
+                            })()}
+                        </div>
+                        <div>
+                            <button className="px-3 py-1 border rounded mr-2" onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page===1}>{t('prev') || 'Prev'}</button>
+                            <button className="px-3 py-1 border rounded" onClick={() => setPage(p => p + 1)} disabled={(page)*pageSize >= (ownerFilter ? expenses.filter(i => String(i.owner_id) === String(ownerFilter)).length : expenses.length)}>{t('next') || 'Next'}</button>
+                        </div>
+                    </div>
                     {/* Edit modal - use Modal component */}
                     <Modal open={showEditModal && !!editing} onClose={() => { setShowEditModal(false); setEditing(null); }} ariaLabel="edit-expense">
                         <h4 className="text-lg font-semibold">{t('editExpense') || 'Edit expense'}</h4>
