@@ -35,7 +35,7 @@ const IncomesPage = () => {
         }
     };
 
-    useEffect(() => { fetchData(); }, [t]);
+    useEffect(() => { fetchData(); }, []);
 
     // default owner when users load
     useEffect(() => {
